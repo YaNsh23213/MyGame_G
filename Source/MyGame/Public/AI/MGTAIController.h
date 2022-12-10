@@ -7,6 +7,7 @@
 #include "MGTAIController.generated.h"
 
 class UMGTAIPerceptionComponent;
+class UMGTRespawnComponent;
 
 UCLASS()
 class MYGAME_API AMGTAIController : public AAIController
@@ -20,6 +21,9 @@ public:
 protected:
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Cpmponents")
     UMGTAIPerceptionComponent* MGTAIPerceptionComponent;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Cpmponents")
+    UMGTRespawnComponent* MGTRespawnComponent;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
     FName FocusOnKayName = "EnemyActor";

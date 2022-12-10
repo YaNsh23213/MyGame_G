@@ -4,12 +4,18 @@
 #include "AI/MGTAIController.h"
 #include "AI/MGTAICharacter.h"
 #include "Components/MGTAIPerceptionComponent.h"
+#include "Components/MGTRespawnComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
 AMGTAIController::AMGTAIController() 
 {
     MGTAIPerceptionComponent = CreateDefaultSubobject<UMGTAIPerceptionComponent>("MGTAIPerceptionComponent");
     SetPerceptionComponent(*MGTAIPerceptionComponent);
+
+    MGTRespawnComponent = CreateDefaultSubobject<UMGTRespawnComponent>("MGTRespawnComponent");
+
+
+    bWantsPlayerState = true;
 }
 
 void AMGTAIController::OnPossess(APawn* InPawn)
