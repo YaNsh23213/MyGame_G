@@ -11,7 +11,7 @@ AMGTAICharacter::AMGTAICharacter(const FObjectInitializer& ObjInit)
     : Super(ObjInit.SetDefaultSubobjectClass<UMGTAIWeaponComponent>("WeaponComponent"))
 {
     AIControllerClass = AMGTAIController::StaticClass();
-    AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+    AutoPossessAI = EAutoPossessAI::Disabled;
 
     bUseControllerRotationYaw = false;
     //

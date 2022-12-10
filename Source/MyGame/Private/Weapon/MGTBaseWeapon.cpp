@@ -66,13 +66,6 @@ void AMGTBaseWeapon::StopFire() {}
 
 void AMGTBaseWeapon::MakeShot() {}
 
-APlayerController* AMGTBaseWeapon::GetPlayerController() const
-{
-    const auto Player = Cast<ACharacter>(GetOwner());
-    if (!Player) return nullptr;
-
-    return Player->GetController<APlayerController>();
-}
 
 bool AMGTBaseWeapon::GetPlayerViewPoint(FVector& ViewLocation, FRotator& ViewRotation) const
 {
@@ -81,8 +74,8 @@ bool AMGTBaseWeapon::GetPlayerViewPoint(FVector& ViewLocation, FRotator& ViewRot
 
     if (MGTCharacter->IsPlayerControlled())
     {
-        const auto Controller = GetPlayerController();
-        if (!GetPlayerController()) return false;
+        const auto Controller = MGTCharacter->GetController<APlayerController>();
+        if (!Controller) return false;
         Controller->GetPlayerViewPoint(ViewLocation, ViewRotation);
     }
     else
@@ -154,7 +147,7 @@ void AMGTBaseWeapon::ChacgeClip()
         CurrentAmmo.Clips--;
     }
     CurrentAmmo.Bullets = DefaultAmmo.Bullets;
-    UE_LOG(BaseWeaponLog, Display, TEXT("---Change Clips---"));
+    //UE_LOG(BaseWeaponLog, Display, TEXT("---Change Clips---"));
 }
 bool AMGTBaseWeapon::CanReload() const
 {

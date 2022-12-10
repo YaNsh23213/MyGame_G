@@ -1,11 +1,10 @@
 // MyGameTry, All Rights Reserved
 
-
 #include "Components/MGTAIPerceptionComponent.h"
 #include "AIController.h"
-#include"MGTUtils.h"
-#include"Components/MGTHealthComponent.h"
-#include"Perception/AISense_Sight.h"
+#include "MGTUtils.h"
+#include "Components/MGTHealthComponent.h"
+#include "Perception/AISense_Sight.h"
 
 AActor* UMGTAIPerceptionComponent::GetClosestEnemy() const
 {
@@ -22,11 +21,14 @@ AActor* UMGTAIPerceptionComponent::GetClosestEnemy() const
     float BestDistance = MAX_FLT;
     AActor* BestPawn = nullptr;
 
-
     for (const auto PercieveActor : PercieveActors)
     {
         const auto HealthComponent = MGTUtils::GetMGTPlayerComponent<UMGTHealthComponent>(PercieveActor);
-        if (HealthComponent && !HealthComponent->IsDead())
+
+        const auto PercivePawn = Cast<APawn>(PercieveActor);
+        const auto AreEnemies = PercivePawn && MGTUtils::AreEnemies(Controller, PercivePawn->Controller);
+
+        if (HealthComponent && !HealthComponent->IsDead() && AreEnemies)
         {
             const auto CurrentDistance = (PercieveActor->GetActorLocation() - Pawn->GetActorLocation()).Size();
             if (CurrentDistance < BestDistance)
@@ -37,5 +39,4 @@ AActor* UMGTAIPerceptionComponent::GetClosestEnemy() const
         }
     }
     return BestPawn;
-
 }

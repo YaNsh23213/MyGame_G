@@ -7,6 +7,7 @@
 #include "Engine/World.h"
 #include "TimerManager.h"
 #include "Camera/CameraShakeBase.h"
+#include "MGTGamemodeBase.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogHealthComponent, All, All)
 
@@ -49,6 +50,7 @@ void UMGTHealthComponent::OnTakeAnyDamage(
 
     if (IsDead())
     {
+        Killed(InstigatedBy);
         OnDeath.Broadcast();
     }
     else if (AutoHeal)
@@ -74,7 +76,7 @@ void UMGTHealthComponent::SetHealth(float NewHealth)
     const auto HealthDelta = NextHealth - Health;
 
     Health = NextHealth;
-    OnHealthChanged.Broadcast(Health,HealthDelta);
+    OnHealthChanged.Broadcast(Health, HealthDelta);
 }
 
 void UMGTHealthComponent::PlayCameraShake()
@@ -85,7 +87,20 @@ void UMGTHealthComponent::PlayCameraShake()
     if (!Player) return;
 
     const auto Controller = Player->GetController<APlayerController>();
-    if (!Controller||!Controller->PlayerCameraManager) return;
+    if (!Controller || !Controller->PlayerCameraManager) return;
 
     Controller->PlayerCameraManager->StartCameraShake(CameraShake);
+}
+
+void UMGTHealthComponent::Killed(AController* KillerController)
+{
+    if (!GetWorld()) return;
+    const auto GameMode = Cast<AMGTGameModeBase>(GetWorld()->GetAuthGameMode());
+    if (!GameMode) return;
+
+    const auto Player = Cast<APawn>(GetOwner());
+    const auto VictimController = Player ? Player->Controller : nullptr;
+
+    GameMode->Killed(KillerController,VictimController);
+
 }

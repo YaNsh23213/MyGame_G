@@ -7,13 +7,22 @@
 
 bool UMGTPlayerHUDWidget::Initialize()
 {
-    const auto HealtCompopnent = MGTUtils::GetMGTPlayerComponent<UMGTHealthComponent>(GetOwningPlayerPawn());
-    if (HealtCompopnent)
+    if (GetOwningPlayer())
     {
-        HealtCompopnent->OnHealthChanged.AddUObject(this, &UMGTPlayerHUDWidget::OnHealthChanged);
+        GetOwningPlayer()->GetOnNewPawnNotifier().AddUObject(this, &UMGTPlayerHUDWidget::OnNewPawn);
+        OnNewPawn(GetOwningPlayerPawn());
     }
     return Super::Initialize();
 }
+
+ void UMGTPlayerHUDWidget::OnNewPawn(APawn* NewPawn) 
+ {
+     const auto HealtCompopnent = MGTUtils::GetMGTPlayerComponent<UMGTHealthComponent>(NewPawn);
+     if (HealtCompopnent)
+     {
+         HealtCompopnent->OnHealthChanged.AddUObject(this, &UMGTPlayerHUDWidget::OnHealthChanged);
+     }
+ }
 
 void UMGTPlayerHUDWidget::OnHealthChanged(float Health, float HealthDelta)
 {
