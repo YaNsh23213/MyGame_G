@@ -4,26 +4,39 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/HUD.h"
+#include "MGTCoreTypes.h"
 #include "MGTGameHUD.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class MYGAME_API AMGTGameHUD : public AHUD
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
-		public:
+public:
     virtual void DrawHUD() override;
 
-	protected:
+protected:
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
     TSubclassOf<UUserWidget> PlayerHUDWidgetClass;
 
-	virtual void BeginPlay() override;
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
+    TSubclassOf<UUserWidget> PauseWidgetClass;
 
-		private:
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
+    TSubclassOf<UUserWidget> GameOverWidgetClass;
+
+    virtual void BeginPlay() override;
+
+private:
+    UPROPERTY()
+    TMap<EMGTMatchState, UUserWidget*> GameWidgets;
+
+    UPROPERTY()
+    UUserWidget* CurentWidget = nullptr;
     void DrawCrosshair();
-	
+
+    void OnMatchStateChanged(EMGTMatchState State);
 };
