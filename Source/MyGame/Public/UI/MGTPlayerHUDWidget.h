@@ -7,7 +7,6 @@
 #include "MGTCoreTypes.h"
 #include "MGTPlayerHUDWidget.generated.h"
 
-
 UCLASS()
 class MYGAME_API UMGTPlayerHUDWidget : public UUserWidget
 {
@@ -31,10 +30,11 @@ public:
     UFUNCTION(BlueprintImplementableEvent, Category = "UI")
     void OnTakeDamage();
 
-    virtual bool Initialize() override;
+protected:
+    virtual void NativeOnInitialized() override;
 
-    private:
+private:
     void OnHealthChanged(float Health, float HealthDelta);
 
-    void OnNewPawn(APawn*NewPawn);
+    void OnNewPawn(APawn* NewPawn);
 };

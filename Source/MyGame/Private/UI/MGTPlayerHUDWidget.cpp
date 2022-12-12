@@ -5,14 +5,14 @@
 #include "Components/MGTWeaponComponent.h"
 #include "MGTUtils.h"
 
-bool UMGTPlayerHUDWidget::Initialize()
+void UMGTPlayerHUDWidget::NativeOnInitialized()
 {
+    Super::NativeOnInitialized();
     if (GetOwningPlayer())
     {
         GetOwningPlayer()->GetOnNewPawnNotifier().AddUObject(this, &UMGTPlayerHUDWidget::OnNewPawn);
         OnNewPawn(GetOwningPlayerPawn());
     }
-    return Super::Initialize();
 }
 
  void UMGTPlayerHUDWidget::OnNewPawn(APawn* NewPawn) 

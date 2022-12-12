@@ -7,7 +7,6 @@
 #include "MGTCoreTypes.h"
 #include "MGTGameModeBase.generated.h"
 
-
 const static int32 MinRoundTimeToRespawn = 10;
 
 class AAIController;
@@ -16,6 +15,8 @@ UCLASS() class MYGAME_API AMGTGameModeBase : public AGameModeBase
     GENERATED_BODY()
 public:
     AMGTGameModeBase();
+
+    FOnMatchStateChangedSignature OnMatchStateChanged;
 
     virtual void StartPlay() override;
     virtual UClass* GetDefaultPawnClassForController_Implementation(AController* InController) override;
@@ -28,6 +29,9 @@ public:
 
     void RespawnRequest(AController* Controller);
 
+    virtual bool SetPause(APlayerController* PC, FCanUnpause CanUnpauseDelegate = FCanUnpause()) override;
+    virtual bool ClearPause() override;
+
 protected:
     UPROPERTY(EditDefaultsOnly, Category = "Game")
     TSubclassOf<AAIController> AICotrollerClass;
@@ -39,6 +43,7 @@ protected:
     FGameData GameData;
 
 private:
+    EMGTMatchState MatchState = EMGTMatchState::WaitToStart;
     int32 CurrentRound = 1;
     int32 RoundCountDown = 0;
     FTimerHandle GameRoundTimerHandle;
@@ -59,4 +64,6 @@ private:
     void StartRespwn(AController* Controller);
 
     void GameOver();
+
+    void SetMatchState(EMGTMatchState State);
 };

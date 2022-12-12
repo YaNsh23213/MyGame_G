@@ -28,6 +28,7 @@ void AMGTGameModeBase::StartPlay()
 
     CurrentRound = 1;
     StartRound();
+    SetMatchState(EMGTMatchState::InProgress);
 }
 
 UClass* AMGTGameModeBase::GetDefaultPawnClassForController_Implementation(AController* InController)
@@ -110,6 +111,7 @@ void AMGTGameModeBase::CreateTeamsInfo()
 
         PlayerState->SetTeamID(TeamID);
         PlayerState->SetTeamColor(DetermineColorByTeamID(TeamID));
+        PlayerState->SetPlayerName(Controller->IsPlayerController() ? "Player" : "Bot");
         SetPlayerColor(Controller);
         TeamID = TeamID == 1 ? 2 : 1;
     }
@@ -198,4 +200,33 @@ void AMGTGameModeBase::GameOver()
             Pawn->DisableInput(nullptr);
         }
     }
+    SetMatchState(EMGTMatchState::GameOver);
+}
+
+void AMGTGameModeBase::SetMatchState(EMGTMatchState State)
+{
+    if (MatchState == State) return;
+    MatchState = State;
+    OnMatchStateChanged.Broadcast(MatchState);
+}
+
+bool AMGTGameModeBase::SetPause(APlayerController* PC, FCanUnpause CanUnpauseDelegate)
+{
+    const auto PauseSet = Super::SetPause(PC, CanUnpauseDelegate);
+    if (PauseSet)
+    {
+        SetMatchState(EMGTMatchState::Pause);
+    }
+
+    return PauseSet;
+}
+bool AMGTGameModeBase::ClearPause()
+{
+    const auto PauseClear = Super::ClearPause();
+    if (PauseClear)
+    {
+        SetMatchState(EMGTMatchState::InProgress);
+    }
+
+    return PauseClear;
 }
