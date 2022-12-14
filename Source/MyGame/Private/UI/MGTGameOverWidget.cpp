@@ -56,6 +56,7 @@ void UMGTGameOverWidget::UpdatePlayerStat()
         PlayerStatRowWidget->SetDeathsTextBlock(MGTUtils::TextFromInt(PlayerState->GetDeathNum()));
         PlayerStatRowWidget->SetTeamTextBlock(MGTUtils::TextFromInt(PlayerState->GetTeamID()));
         PlayerStatRowWidget->SetPlayerIndicatorImage(Controller->IsPlayerController());
+        PlayerStatRowWidget->SetTeamColor(PlayerState->GetTeamColor());
 
         PlayerStatBox->AddChild(PlayerStatRowWidget);
     }

@@ -116,3 +116,21 @@ enum class EMGTMatchState:uint8
 };
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnMatchStateChangedSignature, EMGTMatchState);
+
+
+USTRUCT(BlueprintType)
+struct FLevelData
+{
+    GENERATED_USTRUCT_BODY();
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Came")
+    FName LevelName = NAME_None;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Came")
+    FName LelelDisplayName = NAME_None;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Came")
+    UTexture2D* LevelThumb;
+};
+
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnLevelSelectedSignature, const FLevelData&);

@@ -37,6 +37,8 @@ protected:
     UPROPERTY(EditDefaultsOnly, Category = "Matrerial")
     FName MaterialColorName = "Paint Color";
 
+    virtual void OnHealthChanged(float Health, float HealthDelta);
+
     // Called when the game starts or when spawned
     virtual void BeginPlay() override;
     virtual void OnDeath();
@@ -48,13 +50,11 @@ public:
     virtual bool IsRunning() const;
 
     UFUNCTION(BlueprintCallable, Category = "Movement")
-     float GetMovementDirection() const;
+    float GetMovementDirection() const;
 
     void SetPlayerColor(const FLinearColor& Color);
 
 private:
-    void OnHealthChanged(float Health, float HealthDelta);
-
     UFUNCTION()
     void OnGroundLanded(const FHitResult& Hit);
 };
