@@ -3,6 +3,7 @@
 
 #include "Menu/MGTMenuPlayerController.h"
 
+
 void AMGTMenuPlayerController::BeginPlay() 
 {
     Super::BeginPlay();

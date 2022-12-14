@@ -1,7 +1,7 @@
 // MyGameTry, All Rights Reserved
 
 #include "Menu/UI/MGTMenuHUD.h"
-#include "Blueprint/UserWidget.h"
+#include "UI/MGTBaseWidget.h"
 
 void AMGTMenuHUD::BeginPlay()
 {
@@ -9,10 +9,11 @@ void AMGTMenuHUD::BeginPlay()
 
     if (MenuWidgetClass)
     {
-        const auto MenuWidget = CreateWidget<UUserWidget>(GetWorld(), MenuWidgetClass);
+        const auto MenuWidget = CreateWidget<UMGTBaseWidget>(GetWorld(), MenuWidgetClass);
         if (MenuWidget)
         {
             MenuWidget->AddToViewport();
+            MenuWidget->Show();
         }
     }
 }

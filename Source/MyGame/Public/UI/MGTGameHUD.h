@@ -7,9 +7,7 @@
 #include "MGTCoreTypes.h"
 #include "MGTGameHUD.generated.h"
 
-/**
- *
- */
+class UMGTBaseWidget;
 UCLASS()
 class MYGAME_API AMGTGameHUD : public AHUD
 {
@@ -32,10 +30,10 @@ protected:
 
 private:
     UPROPERTY()
-    TMap<EMGTMatchState, UUserWidget*> GameWidgets;
+    TMap<EMGTMatchState, UMGTBaseWidget*> GameWidgets;
 
     UPROPERTY()
-    UUserWidget* CurentWidget = nullptr;
+    UMGTBaseWidget* CurentWidget = nullptr;
     void DrawCrosshair();
 
     void OnMatchStateChanged(EMGTMatchState State);

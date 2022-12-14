@@ -2,7 +2,7 @@
 
 #include "UI/MGTGameHUD.h"
 #include "Engine/Canvas.h"
-#include "Blueprint/UserWidget.h"
+#include "UI/MGTBaseWidget.h"
 #include "MGTGameModeBase.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogMGTGameHUD, All, All);
@@ -11,9 +11,9 @@ void AMGTGameHUD::BeginPlay()
 {
     Super::BeginPlay();
 
-    GameWidgets.Add(EMGTMatchState::InProgress, CreateWidget<UUserWidget>(GetWorld(), PlayerHUDWidgetClass));
-    GameWidgets.Add(EMGTMatchState::Pause, CreateWidget<UUserWidget>(GetWorld(), PauseWidgetClass));
-    GameWidgets.Add(EMGTMatchState::GameOver, CreateWidget<UUserWidget>(GetWorld(), GameOverWidgetClass));
+    GameWidgets.Add(EMGTMatchState::InProgress, CreateWidget<UMGTBaseWidget>(GetWorld(), PlayerHUDWidgetClass));
+    GameWidgets.Add(EMGTMatchState::Pause, CreateWidget<UMGTBaseWidget>(GetWorld(), PauseWidgetClass));
+    GameWidgets.Add(EMGTMatchState::GameOver, CreateWidget<UMGTBaseWidget>(GetWorld(), GameOverWidgetClass));
 
     for (auto GameWidetPair : GameWidgets)
     {
@@ -67,6 +67,7 @@ void AMGTGameHUD::OnMatchStateChanged(EMGTMatchState State)
     if (CurentWidget)
     {
         CurentWidget->SetVisibility(ESlateVisibility::Visible);
+        CurentWidget->Show();
     }
     UE_LOG(LogMGTGameHUD, Display, TEXT("Mathc state changed: %s"), *UEnum::GetValueAsString(State));
 }

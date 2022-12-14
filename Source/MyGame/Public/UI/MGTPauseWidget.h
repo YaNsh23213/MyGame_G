@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Blueprint/UserWidget.h"
+#include "UI/MGTBaseWidget.h"
 #include "MGTPauseWidget.generated.h"
 class UButton;
 UCLASS()
-class MYGAME_API UMGTPauseWidget : public UUserWidget
+class MYGAME_API UMGTPauseWidget : public UMGTBaseWidget
 {
     GENERATED_BODY()
 

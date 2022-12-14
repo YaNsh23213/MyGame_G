@@ -3,12 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Blueprint/UserWidget.h"
 #include "MGTCoreTypes.h"
+#include "UI/MGTBaseWidget.h"
 #include "MGTPlayerHUDWidget.generated.h"
-
+class UProgressBar;
 UCLASS()
-class MYGAME_API UMGTPlayerHUDWidget : public UUserWidget
+class MYGAME_API UMGTPlayerHUDWidget : public UMGTBaseWidget
 {
     GENERATED_BODY()
 public:
@@ -30,11 +30,34 @@ public:
     UFUNCTION(BlueprintImplementableEvent, Category = "UI")
     void OnTakeDamage();
 
+    UFUNCTION(BlueprintCallable, Category = "UI")
+    int32 GetKillsNun() const;
+
+    UFUNCTION(BlueprintCallable, Category = "UI")
+    FString ForamatBullets(int32 BulletsNum) const;
+
 protected:
+    UPROPERTY(meta = (BindWidget))
+    UProgressBar* HealthProgressBar;
+
+    UPROPERTY(meta = (BindWidgetAnim), Transient)
+    UWidgetAnimation* DamageAnimation;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
+    float PercentColorThreshold = 0.3f;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
+    FLinearColor GoodColor = FLinearColor::White;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
+    FLinearColor BadColor = FLinearColor::Red;
+
     virtual void NativeOnInitialized() override;
 
 private:
     void OnHealthChanged(float Health, float HealthDelta);
 
     void OnNewPawn(APawn* NewPawn);
+
+    void UpdateHealthBar();
 };

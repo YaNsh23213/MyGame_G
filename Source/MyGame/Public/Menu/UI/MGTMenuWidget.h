@@ -3,22 +3,48 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Blueprint/UserWidget.h"
+#include "MGTCoreTypes.h"
+#include "UI/MGTBaseWidget.h"
 #include "MGTMenuWidget.generated.h"
 
 class UButton;
+class UHorizontalBox;
+class UMGTGameInstance;
+class UMGTLevelItemWidget;
 UCLASS()
-class MYGAME_API UMGTMenuWidget : public UUserWidget
+class MYGAME_API UMGTMenuWidget : public UMGTBaseWidget
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 protected:
-    
     UPROPERTY(meta = (BindWidget))
     UButton* StartGameButton;
 
-    virtual void NativeOnInitialized() override;
+    UPROPERTY(meta = (BindWidget))
+    UButton* QuitGameButton;
 
-    private:
+    UPROPERTY(meta = (BindWidget))
+    UHorizontalBox* LevelItemsBox;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
+    TSubclassOf<UUserWidget> LevelItemWidgetClass;
+
+    UPROPERTY(meta = (BindWidgetAnim), Transient)
+    UWidgetAnimation* HideAnimation;
+
+    virtual void NativeOnInitialized() override;
+    virtual void OnAnimationFinished_Implementation(const UWidgetAnimation* Animation) override;
+
+private:
+    UPROPERTY()
+    TArray<UMGTLevelItemWidget*> LevelItemWidgets;
+
     UFUNCTION()
     void OnStartGame();
+
+    UFUNCTION()
+    void OnQuitGame();
+
+    void InitLevelItems();
+    void OnLevelSelected(const FLevelData& Data);
+    UMGTGameInstance* GetMGTGameInstance() const;
 };

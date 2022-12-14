@@ -4,12 +4,6 @@
 #include "MGTGameModeBase.h"
 #include "Player/MGTPlayerState.h"
 
-int32 UMGTGameDataUserWidget::GetKillsNun() const
-{
-    const auto PlayerState = GetMGTPlayerState();
-    return PlayerState ? PlayerState->GetKillsNum() : 0;
-}
-
 int32 UMGTGameDataUserWidget::GetCurrentRoundNum() const
 {
     const auto GameMode = GetMGTGameMode();
